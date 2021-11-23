@@ -17,7 +17,7 @@ import { backgroundColor, borderColor } from "styled-system";
 
 export const InputPassword = ({ navigation }) => {
   const [value, setValue] = useState({
-    nickname: "",
+    email: "",
     password: "",
   });
   const [show, setShow] = useState(false);
@@ -28,16 +28,19 @@ export const InputPassword = ({ navigation }) => {
 
   const handleSubmit = async () => {
     const formData = new FormData();
-    formData.append("nickname", value.nickname);
+    formData.append("email", value.email);
     formData.append("password", value.password);
     const response = await axios.post(
       "http://192.168.1.71:80/AplicacionesMoviles/index.php",
       formData,
       { headers: { "Content-type": "multipart/form-data" } }
     );
-    let isLogged = response.data.result;
-    console.log(typeof isLogged);
-    navigation.navigate("Details", { name: value.nickname });
+
+    let isLogged=response.data;
+    if(isLogged===1){
+      navigation.replace("Package")
+    }
+
   };
   const Submit = () => {
     return <Button onPress={handleSubmit}>Login</Button>;
@@ -75,7 +78,7 @@ export const InputPassword = ({ navigation }) => {
         width="75%"
         placeholder="Correo electrónico"
         onChangeText={(text) => {
-          setValue({ ...value, nickname: text });
+          setValue({ ...value, email: text });
         }}
       />
       <Input
