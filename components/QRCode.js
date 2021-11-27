@@ -23,7 +23,7 @@ export const QRCode=({navigation})=> {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     setText(data)
-    navigation.replace('Stepper',{data:data})
+    // navigation.replace('Stepper',{data:data})
     console.log('Type: ' + type + '\nData: ' + data)
   };
 
@@ -52,7 +52,7 @@ export const QRCode=({navigation})=> {
       </View>
       <Text style={styles.maintext}>{text}</Text>
 
-      {scanned && <Button title={'Scan again?'} onPress={() => setScanned(false)} color='tomato' />}
+      {scanned && <Button color={'#cc017a'} title={'Guardar información'} onPress={() => setScanned(false)}/>}
     </View>
   );
 }
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
   maintext: {
     fontSize: 16,
     margin: 20,
+    color:'#cc017a'
   },
   barcodebox: {
     alignItems: 'center',
@@ -74,7 +75,11 @@ const styles = StyleSheet.create({
     height: 300,
     width: 300,
     overflow: 'hidden',
-    borderRadius: 30,
+    borderRadius: 10,
     backgroundColor: '#cc017a'
+  },
+  button:{
+    backgroundColor:'#cc017a',
+    height:50
   }
 });

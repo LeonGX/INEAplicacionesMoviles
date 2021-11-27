@@ -10,12 +10,14 @@ import {
   Heading,
   Button,
   Center,
+  useToast,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
 import axios from "axios";
 import { backgroundColor, borderColor } from "styled-system";
 
 export const InputPassword = ({ navigation }) => {
+  const toast = useToast();
   const [value, setValue] = useState({
     email: "",
     password: "",
@@ -36,11 +38,14 @@ export const InputPassword = ({ navigation }) => {
       { headers: { "Content-type": "multipart/form-data" } }
     );
 
-    let isLogged=response.data;
-    if(isLogged===1){
-      navigation.replace("Package")
-    }
-
+    let isLogged = response.data;
+    isLogged === 1
+      ? navigation.replace("Package")
+      : toast.show({
+          title: "Correo o contraseña incorrectos",
+          status: "error",
+          description: "Ingresa de nuevo los datos",
+        });
   };
   const Submit = () => {
     return <Button onPress={handleSubmit}>Login</Button>;
@@ -61,10 +66,9 @@ export const InputPassword = ({ navigation }) => {
     heading: {
       color: "black",
       fontSize: 15,
-      fontWeight:'normal',
+      fontWeight: "normal",
       marginBottom: 10,
       marginTop: 60,
-      
     },
   });
   return (
@@ -103,7 +107,7 @@ export const InputPassword = ({ navigation }) => {
         }
         placeholder="Contraseña"
       />
-      <Button  width="75%" backgroundColor={"#cc017a"} onPress={handleSubmit}>
+      <Button width="75%" backgroundColor={"#cc017a"} onPress={handleSubmit}>
         Iniciar sesión
       </Button>
     </View>

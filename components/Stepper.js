@@ -64,7 +64,7 @@ const PackageInfo = (props) => {
         </Box>
         <Stack p="4" space={3}>
           <Stack space={2}>
-            <Heading size="md" >
+            <Heading size="md">
               Paquete Electoral
             </Heading>
             <Text
@@ -98,8 +98,7 @@ export const StepperPackage = ({ route }) => {
       <Stepper
         active={active}
         content={content}
-        onNext={() => setActive((p) => p + 1)}
-        onBack={() => setActive((p) => p - 1)}
+        
         onFinish={() => Alert.alert("Finalizado")}
       />
     </View>
