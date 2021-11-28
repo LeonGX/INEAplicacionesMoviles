@@ -44,6 +44,7 @@ export const InputPassword = ({ navigation }) => {
       : toast.show({
           title: "Correo o contraseña incorrectos",
           status: "error",
+          placement: "top",
           description: "Ingresa de nuevo los datos",
         });
   };

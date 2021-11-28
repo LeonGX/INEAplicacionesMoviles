@@ -10,13 +10,17 @@ import {
   Text,
   Center,
   Stack,
-  HStack
+  HStack,
 } from "native-base";
 import axios from "axios";
+import * as Location from "expo-location";
 
 export const PackageDetail = ({ route }) => {
   const { id, status } = route.params;
   const [packageine, setPackageine] = useState([]);
+  const [address, setAddress] = useState("");
+
+  const img = require("../assets/banner-ine.png");
 
   useEffect(() => {
     const getPackage = async () => {
@@ -27,102 +31,31 @@ export const PackageDetail = ({ route }) => {
         "http://192.168.1.71:80/AplicacionesMoviles/GetPackageDetails.php",
         formData,
         { headers: { "Content-type": "multipart/form-data" } }
-      );
+      )
       setPackageine(response.data[0]);
+      let latitud = parseFloat(response.data[0].latitud)
+      let longitud = parseFloat(response.data[0].longitud)
+      let responseAddress = await Location.reverseGeocodeAsync({
+        latitude:latitud,
+        longitude:longitud
+      });
+      for (let item of responseAddress) {
+        let address = `${item.street} #${item.name}, ${item.district} ${item.postalCode}, ${item.city}; ${item.region}`;
+  
+        setAddress(address);
+      }
     };
     getPackage();
   }, []);
   return (
     <View style={styles.container}>
-       <Box
-      maxW="90%"
-      rounded="lg"
-      overflow="hidden"
-      borderColor="coolGray.200"
-      borderWidth={1}
-      _dark={{
-        borderColor: "coolGray.600",
-        backgroundColor: "gray.700",
-      }}
-      _web={{
-        shadow: 2,
-        borderWidth: 0,
-      }}
-      _light={{
-        backgroundColor: "gray.50",
-      }}
-    >
-      <Box>
-        <AspectRatio w="100%" ratio={16 / 9}>
-          <Image
-            source={{
-              uri: "https://www.holidify.com/images/cmsuploads/compressed/Bangalore_citycover_20190613234056.jpg",
-            }}
-            alt="image"
-          />
-        </AspectRatio>
-        <Center
-          bg="#cc017a"
-          _dark={{
-            bg: "violet.400",
-          }}
-          _text={{
-            color: "warmGray.50",
-            fontWeight: "700",
-            fontSize: "xs",
-          }}
-          position="absolute"
-          bottom="0"
-          px="3"
-          py="1.5"
-        >
-          PHOTOS
-        </Center>
-      </Box>
-      <Stack p="4" space={3}>
-        <Stack space={2}>
-          <Heading size="md" ml="-1">
-            The Garden City
-          </Heading>
-          <Text
-            fontSize="xs"
-            _light={{
-              color: "violet.500",
-            }}
-            _dark={{
-              color: "violet.400",
-            }}
-            fontWeight="500"
-            ml="-0.5"
-            mt="-1"
-          >
-            The Silicon Valley of India.
-          </Text>
-        </Stack>
-        <Text fontWeight="400">
-          Bengaluru (also called Bangalore) is the center of India's high-tech
-          industry. The city is also known for its parks and nightlife.
-        </Text>
-        <HStack alignItems="center" space={4} justifyContent="space-between">
-          <HStack alignItems="center">
-            <Text
-              color="coolGray.600"
-              _dark={{
-                color: "warmGray.200",
-              }}
-              fontWeight="400"
-            >
-              6 mins ago
-            </Text>
-          </HStack>
-        </HStack>
-      </Stack>
-    </Box>
-      {/* <Box
-        style={styles.card}
+      <Box
+        maxW="95%"
         rounded="lg"
         overflow="hidden"
         borderColor="coolGray.200"
+        borderWidth={1}
+        height="100%"
         _dark={{
           borderColor: "coolGray.600",
           backgroundColor: "gray.700",
@@ -135,25 +68,65 @@ export const PackageDetail = ({ route }) => {
           backgroundColor: "gray.50",
         }}
       >
-        <Stack p="2" space={3}>
+        <Box>
+          <AspectRatio w="100%" ratio={16 / 9}>
+            <Image
+              height="100%"
+              resizeMode={"cover"}
+              width="100%"
+              source={require("../assets/banner-ine.png")}
+              alt="image"
+            />
+          </AspectRatio>
+          <Center
+            bg="#cc017a"
+            _dark={{
+              bg: "violet.400",
+            }}
+            _text={{
+              color: "warmGray.50",
+              fontWeight: "700",
+              fontSize: "xl",
+            }}
+            position="absolute"
+            bottom={0}
+            px={3}
+            py={1.5}
+          >
+            Instituto Nacional Electoral
+          </Center>
+        </Box>
+        <Stack p="4" space={3}>
           <Stack space={2}>
-            <Heading style={styles.heading} size="md">
-              Paquete Electoral {packag.numberpackage}
+            <Heading style={styles.title} size="md" ml={-1}>
+              Paquete Electoral N°{" "}
+              <Text style={styles.number}>{packageine.numberpackage}</Text>
             </Heading>
             <Text
+              fontSize="sm"
               _light={{
-                color: "gray.500",
+                color: "#cc017a",
               }}
               _dark={{
-                color: "violet.400",
+                color: "#cc017a",
               }}
               fontWeight="500"
+              ml={-0.5}
+              mt={-1}
             >
-              Estado actual: {packag.state}
+              Entrega y actualización de paquetes electorales
             </Text>
           </Stack>
+          <Text fontWeight="400">
+            <Text style={styles.info}>Número identificador: </Text> {packageine.IdPackage}
+          </Text>
+          <Text fontWeight="400"><Text style={styles.info}>Situación actual: </Text> {packageine.state}</Text>
+          <Text fontWeight="400">
+          <Text style={styles.info}>Ubicación aproximada del paquete: </Text> {address}
+          </Text>
+          
         </Stack>
-      </Box> */}
+      </Box>
     </View>
   );
 };
@@ -180,6 +153,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: "bold",
+    color: "black",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -195,5 +169,13 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "100",
     textTransform: "uppercase",
+  },
+  info:{
+    color:'black'
+  },  
+  number: {
+    color: "#cc017a",
+    fontWeight: "bold",
+    fontSize: 25,
   },
 });

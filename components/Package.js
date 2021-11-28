@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Stepper from "react-native-stepper-ui";
 import { View, Alert, StyleSheet } from "react-native";
-import { useNavigation } from '@react-navigation/native';
-
+import { useNavigation } from "@react-navigation/native";
 
 import {
   Box,
@@ -13,57 +12,81 @@ import {
   Center,
   Stack,
   Pressable,
+  Circle,
+  Icon,
+  HStack,
 } from "native-base";
+import { MaterialIcons } from "@expo/vector-icons";
 
-export const Package = ({ data}) => {
-    const navigation = useNavigation();
+export const Package = ({ data }) => {
+  const navigation = useNavigation();
   const packag = data;
-    const seeDetails = () => {
-        navigation.navigate("PackageDetails",{id:packag.IdPackage,status:packag.status})
-    }
+  const stepper = ["Holi", "holi", "Holi", "holi", "Holi"];
+
+  const seeDetails = () => {
+    navigation.navigate("PackageDetails", {
+      id: packag.IdPackage,
+      status: packag.status,
+    });
+  };
   return (
     <View style={styles.container}>
-    <Pressable style={styles.pressable}  onPress={() => seeDetails()}>
+      <Pressable style={styles.pressable} onPress={() => seeDetails()}>
+        <Box
+          style={styles.card}
+          rounded="lg"
+          overflow="hidden"
+          borderColor="coolGray.200"
+          _dark={{
+            borderColor: "coolGray.600",
+            backgroundColor: "gray.700",
+          }}
+          _web={{
+            shadow: 2,
+            borderWidth: 0,
+          }}
+          _light={{
+            backgroundColor: "gray.50",
+          }}
+        >
+          <Stack p="2" space={3}>
+            <Stack space={2}>
+              <Heading style={styles.heading} size="md">
+                Paquete Electoral #{packag.numberpackage}
+              </Heading>
+              <HStack space={10}>
 
-        
-      <Box
-        style={styles.card}
-        rounded="lg"
-        overflow="hidden"
-        borderColor="coolGray.200"
-        _dark={{
-          borderColor: "coolGray.600",
-          backgroundColor: "gray.700",
-        }}
-        _web={{
-          shadow: 2,
-          borderWidth: 0,
-        }}
-        _light={{
-          backgroundColor: "gray.50",
-        }}
-      >
-        <Stack p="2" space={3}>
-          <Stack space={2}>
-            <Heading style={styles.heading} size="md">
-              Paquete Electoral #{packag.numberpackage}
-            </Heading>
-            <Text
-              _light={{
-                color: "gray.500",
-              }}
-              _dark={{
-                color: "violet.400",
-              }}
-              fontWeight="500"
-            >
-              Estado actual: {packag.state}
-            </Text>
+              <Text
+                style={styles.state}
+                _light={{
+                  color: "gray.500",
+                }}
+                _dark={{
+                  color: "violet.400",
+                }}
+                fontWeight="500"
+                >
+                Estado actual: {packag.state}
+                </Text>
+                
+              <HStack  space={1}>
+              {stepper.map((stepper, index) =>
+                  index + 1 <= packag.status ? (
+                    <Circle size={4} bg="#cc017a">
+                      <Text style={styles.stepper}>{index + 1}</Text>
+                    </Circle>
+                  ) : (
+                    <Circle  size={4} bg="#ff9ed8">
+                      <Text style={styles.stepper}>{index + 1}</Text>
+                    </Circle>
+                  )
+                  )}
+              </HStack>
+              </HStack>
+            </Stack>
           </Stack>
-        </Stack>
-      </Box>
-    </Pressable>
-
+        </Box>
+      </Pressable>
     </View>
   );
 };
@@ -75,6 +98,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#cc017a",
     justifyContent: "center",
+  },
+  circle: {
+    padding: 10,
   },
   container: {
     marginVertical: 5,
@@ -106,13 +132,20 @@ const styles = StyleSheet.create({
     fontWeight: "100",
     textTransform: "uppercase",
   },
-  pressable : {
-    width:"100%",
-    alignItems:"center"
+  pressable: {
+    width: "100%",
+    alignItems: "center",
   },
-  box:{
-      width:"100%",
-      height:"50%",
-      backgroundColor:"red",
-  }
+  box: {
+    width: "100%",
+    height: "50%",
+    backgroundColor: "red",
+  },
+  state: {
+    fontSize: 12,
+  },
+  stepper: {
+    color: "white",
+    fontSize: 6,
+  },
 });

@@ -75,8 +75,8 @@ export default function () {
       <Package.Screen
         name="Packages"
         options={{
-          tabBarLabelStyle:{fontSize:10},
-          tabBarStyle: { height:'7%',padding:10},
+          tabBarLabelStyle:{fontSize:15,marginTop:10},
+          tabBarStyle: { height:'8%',padding:10},
           tabBarLabel: "Paquetes",
           tabBarIcon: () => (
             <FontAwesome5 name="box" size={35} />
@@ -88,8 +88,8 @@ export default function () {
       <Package.Screen
         name="Stepper"
         options={{
-          tabBarLabelStyle:{fontSize:10},
-          tabBarStyle: { height:'7%', padding:10},
+          tabBarLabelStyle:{fontSize:15,marginTop:10},
+          tabBarStyle: { height:'8%', padding:10},
           tabBarLabel: "Escanear Código QR",
           tabBarIcon: () => (
             <MaterialCommunityIcons name="qrcode" size={40} />

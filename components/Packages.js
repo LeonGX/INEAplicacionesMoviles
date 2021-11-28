@@ -15,11 +15,12 @@ import {
 } from "native-base";
 import axios from "axios";
 import {Package} from './Package'
+import {useIsFocused} from '@react-navigation/native'
 
 
 export const Packages = () => {
   const [packages, setPackages] = useState([]);
-
+  const isFocused = useIsFocused();
   useEffect(() => {
     
   const getPackages=async()=>{
@@ -32,7 +33,7 @@ export const Packages = () => {
     setPackages(response.data)
   }
     getPackages()
-  }, [])
+  }, [isFocused])
 
   return (
     <ScrollView>
