@@ -3,7 +3,7 @@
 # _Aplicaciones Móviles Multidispositivos_
 
 Proyecto para materia de _Aplicaciones Móviles Multidispositivos_ del Instituto Tecnológico de Aguascalientes, periodo Agosto-Diciembre 2021.
- Aplicación movil capaz de visualizar y escanear paquetes electorales con el propósito de actualizar su estado
+ Aplicación movil capaz de visualizar y escanear paquetes electorales con el propósito de tener un seguimiento acerca de su ubicación y su estado.
 
 ## Badges
 
