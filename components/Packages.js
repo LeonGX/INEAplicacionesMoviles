@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useRef } from "react";
 import Stepper from "react-native-stepper-ui";
 import { View, Alert, StyleSheet } from "react-native";
 import { Coords } from "./Coords";
@@ -12,17 +12,23 @@ import {
   Center,
   Stack,
   ScrollView,
+  Pressable,
+  Circle,
+  HStack,
+
 } from "native-base";
 import axios from "axios";
 import {Package} from './Package'
 import {useIsFocused} from '@react-navigation/native'
 
 
-export const Packages = () => {
+export const Packages = ({navigation}) => {
   const [packages, setPackages] = useState([]);
   const isFocused = useIsFocused();
+  let isRendered = useRef(false);
+  
   useEffect(() => {
-    
+    isRendered = true;
   const getPackages=async()=>{
     const response =await  axios.post("http://192.168.1.71:80/AplicacionesMoviles/getPackages.php", {
       method: 'GET',
@@ -33,13 +39,26 @@ export const Packages = () => {
     setPackages(response.data)
   }
     getPackages()
+    return () => {
+      isRendered = false;
+  };
   }, [isFocused])
 
+  const seeDetails = (id,status) => {
+    navigation.navigate("PackageDetails", {
+      id: id,
+      status: status,
+    });
+  };
+
   return (
-    <ScrollView>
-      {packages.map((pack,index)=>(
-          <Package key={index}  data={pack}/>
-      ))}
+    <ScrollView >
+      {packages.map((pack)=>{
+        return (
+
+          <Package key={pack.numberpackage} data={pack}/>
+        )
+      })}
     </ScrollView>
    
   );

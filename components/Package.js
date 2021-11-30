@@ -17,11 +17,15 @@ import {
   HStack,
 } from "native-base";
 import { MaterialIcons } from "@expo/vector-icons";
+import {useIsFocused} from '@react-navigation/native'
+
 
 export const Package = ({ data }) => {
   const navigation = useNavigation();
   const packag = data;
-  const stepper = ["Holi", "holi", "Holi", "holi", "Holi"];
+  const stepper = ["test", "test", "test", "test", "test"];
+  const isFocused = useIsFocused();
+
 
   const seeDetails = () => {
     navigation.navigate("PackageDetails", {
@@ -54,7 +58,7 @@ export const Package = ({ data }) => {
               <Heading style={styles.heading} size="md">
                 Paquete Electoral #{packag.numberpackage}
               </Heading>
-              <HStack space={10}>
+              <HStack width="40%" style={{ marginRight:50}} >
 
               <Text
                 style={styles.state}
@@ -68,20 +72,22 @@ export const Package = ({ data }) => {
                 >
                 Estado actual: {packag.state}
                 </Text>
-                
-              <HStack  space={1}>
+              <View style={{marginLeft:50}}>
+
+              <HStack  space={2}>
               {stepper.map((stepper, index) =>
                   index + 1 <= packag.status ? (
-                    <Circle size={4} bg="#cc017a">
+                    <Circle key={index} size={4} bg="#cc017a">
                       <Text style={styles.stepper}>{index + 1}</Text>
                     </Circle>
                   ) : (
-                    <Circle  size={4} bg="#ff9ed8">
+                    <Circle key={index}  size={4} bg="#ff9ed8">
                       <Text style={styles.stepper}>{index + 1}</Text>
                     </Circle>
                   )
                   )}
               </HStack>
+              </View>
               </HStack>
             </Stack>
           </Stack>

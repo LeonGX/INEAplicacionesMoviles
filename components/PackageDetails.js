@@ -14,11 +14,15 @@ import {
 } from "native-base";
 import axios from "axios";
 import * as Location from "expo-location";
+import {useIsFocused} from '@react-navigation/native'
+
 
 export const PackageDetail = ({ route }) => {
   const { id, status } = route.params;
   const [packageine, setPackageine] = useState([]);
   const [address, setAddress] = useState("");
+  const isFocused = useIsFocused();
+
 
   const img = require("../assets/banner-ine.png");
 
@@ -40,13 +44,13 @@ export const PackageDetail = ({ route }) => {
         longitude:longitud
       });
       for (let item of responseAddress) {
-        let address = `${item.street} #${item.name}, ${item.district} ${item.postalCode}, ${item.city}; ${item.region}`;
+        let address = `${item.street} #${item.name}, ${item.district} ${item.postalCode}, ${item.city}; ${item.region}.`;
   
         setAddress(address);
       }
     };
     getPackage();
-  }, []);
+  }, [isFocused]);
   return (
     <View style={styles.container}>
       <Box
